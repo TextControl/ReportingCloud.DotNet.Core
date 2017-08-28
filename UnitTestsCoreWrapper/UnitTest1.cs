@@ -350,7 +350,7 @@ namespace UnitTestsCoreWrapper
                 rc.UploadTemplate(sTempFilename, bDocument);
 
                 // create thumbnails
-                List<System.Drawing.Image> images = rc.GetTemplateThumbnails(sTempFilename, 20, 1, 1, ImageFormat.PNG);
+                List<string> images = rc.GetTemplateThumbnails(sTempFilename, 20, 1, 1, ImageFormat.PNG);
 
                 // check, if images are created
                 Assert.IsFalse((images.Count == 0));

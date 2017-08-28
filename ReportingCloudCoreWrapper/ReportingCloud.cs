@@ -12,13 +12,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
 
-/// <summary>
-/// This namespace contains classes for the Text Control ReportingCloud .NET Core wrapper
-/// </summary>
+
 namespace TXTextControl.ReportingCloud
 {
     /*-------------------------------------------------------------------------------------------------------
@@ -109,7 +105,7 @@ namespace TXTextControl.ReportingCloud
         //  - int FromPage
         //  - int ToPage
         //
-        // Return value: A List of System.Drawing.Image
+        // Return value: A List of String
         *-----------------------------------------------------------------------------------------------------*/
         /// <summary>
         /// This method returns a list of thumbnails of a specific template in the template storage.
@@ -119,12 +115,9 @@ namespace TXTextControl.ReportingCloud
         /// <param name="fromPage">The first page of the template that should be created as thumbnails.</param>
         /// <param name="toPage">The last page of the template that should be created as thumbnails.</param>
         /// <param name="imageFormat">The image format of the returned thumbnail images.</param>
-        public List<System.Drawing.Image> GetTemplateThumbnails(string templateName, int zoomFactor,
+        public List<string> GetTemplateThumbnails(string templateName, int zoomFactor,
         int fromPage = 1, int toPage = 0, ImageFormat imageFormat = ImageFormat.PNG)
         {
-            // create a new list of System.Drawing.Image
-            List<System.Drawing.Image> lImageThumbnails = new List<System.Drawing.Image>();
-
             // create a new HttpClient using the Factory method CreateHttpClient
             using (HttpClient client = CreateHttpClient())
             {
@@ -139,18 +132,7 @@ namespace TXTextControl.ReportingCloud
                 // if sucessful, return the image list
                 if (response.IsSuccessStatusCode)
                 {
-                    List<string> results = (List<string>)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(List<string>));
-
-                    // create images from the Base64 encoded images
-                    foreach (string thumbnail in results)
-                    {
-                        using (var ms = new MemoryStream(System.Convert.FromBase64String(thumbnail)))
-                        {
-                            lImageThumbnails.Add(System.Drawing.Image.FromStream(ms));
-                        }
-                    }
-
-                    return lImageThumbnails;
+                    return (List<string>)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(List<string>));
                 }
                 else
                 {
@@ -412,9 +394,9 @@ namespace TXTextControl.ReportingCloud
         //
         // Return value: string[]
         *-----------------------------------------------------------------------------------------------------*/
-        // <summary>
-        // This method returns the available dictionaries.
-        // </summary>
+        /// <summary>
+        /// This method returns the available dictionaries.
+        /// </summary>
         public string[] GetAvailableDictionaries()
         {
             // create a new HttpClient using the Factory method CreateHttpClient

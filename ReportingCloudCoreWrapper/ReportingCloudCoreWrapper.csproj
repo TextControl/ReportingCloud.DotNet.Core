@@ -2,12 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>TXTextControl.ReportingCloud.Core</PackageId>
+    <Version>1.100.500</Version>
+    <Authors>Text Control GmbH</Authors>
+    <Company>Text Control GmbH</Company>
+    <Product>Text Control ReportingCloud</Product>
+    <Description>Microsoft .NET Core wrapper classes for Text Control ReportingCloud. A Web (REST) API platform to generate MS Word compatible reports in the cloud.</Description>
+    <Copyright>Text Control GmbH</Copyright>
+    <PackageLicenseUrl>https://github.com/TextControl/TXTextControl.ReportingCloud.DotNet/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.reporting.cloud/</PackageProjectUrl>
+    <PackageIconUrl>http://www.reporting.cloud/favicon.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/TextControl/ReportingCloud.DotNet.Core</RepositoryUrl>
+    <PackageTags>MailMerge, Reporting, MS Word, Reporting Cloud, Flow Type Layout</PackageTags>
+    <FileVersion>1.0.101.100</FileVersion>
+    <AssemblyVersion>1.0.101.100</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp1.1\ReportingCloudCoreWrapper.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

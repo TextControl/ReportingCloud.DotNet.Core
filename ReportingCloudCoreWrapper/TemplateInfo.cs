@@ -23,7 +23,9 @@ namespace TXTextControl.ReportingCloud
         /// The list of the contained merge fields.
         /// </summary>
         public List<MergeField> MergeFields { get; set; }
-
+        /// <summary>
+        /// Constructor for TemplateInfo object.
+        /// </summary>
         public TemplateInfo()
         {
             this.MergeBlocks = new List<MergeBlock>();
@@ -79,6 +81,9 @@ namespace TXTextControl.ReportingCloud
     /// </summary>
     public class MergeBlock
     {
+        /// <summary>
+        /// Constructor of MergeBlock object.
+        /// </summary>
         public MergeBlock()
         {
             this.MergeBlocks = new List<MergeBlock>();
