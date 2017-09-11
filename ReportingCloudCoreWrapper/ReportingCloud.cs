@@ -230,7 +230,7 @@ namespace TXTextControl.ReportingCloud
                 // MergeBody is posted as a JSON object
                 HttpResponseMessage response = client.PostAsync("v1/document/merge?templateName=" + templateName +
                     "&returnFormat=" + returnFormat.ToString() +
-                    "& append = " + append.ToString() + " & test = " + test.ToString(), 
+                    "&append=" + append.ToString() + "&test=" + test.ToString(), 
                     new StringContent(sMergeBody, Encoding.UTF8, "application/json")).Result;
 
                 // if sucessful, return the image list

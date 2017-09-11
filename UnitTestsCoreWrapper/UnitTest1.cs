@@ -11,7 +11,7 @@ namespace UnitTestsCoreWrapper
     {
         string sUsername = "";
         string sPassword = "";
-        Uri uriBasePath = new Uri("https://api.reporting.cloud/");
+        Uri uriBasePath = new Uri("https://api.reporting.cloud");
 
         [TestMethod()]
         public void AvailableDictionariesTest()
@@ -99,15 +99,25 @@ namespace UnitTestsCoreWrapper
                 string sTempFilename = "test" + Guid.NewGuid().ToString() + ".tx";
                 rc.UploadTemplate(sTempFilename, bDocument);
 
+                List<Invoice> invoices = new List<Invoice>();
+
                 // create dummy data
                 Invoice invoice = new Invoice();
                 invoice.yourcompany_companyname = "Text Control, LLC";
                 invoice.invoice_no = "Test_R667663";
                 invoice.billto_name = "<html><strong>Test</strong> <em>Company</em></html>";
 
+                Invoice invoice2 = new Invoice();
+                invoice2.yourcompany_companyname = "Text Control 2, LLC";
+                invoice2.invoice_no = "Test_R667663";
+                invoice2.billto_name = "<html><strong>Test</strong> <em>Company</em></html>";
+
+                invoices.Add(invoice);
+                invoices.Add(invoice2);
+
                 // create a new MergeBody object
                 MergeBody body = new MergeBody();
-                body.MergeData = invoice;
+                body.MergeData = invoices;
 
                 MergeSettings settings = new MergeSettings();
                 settings.Author = "Text Control GmbH";
@@ -116,7 +126,7 @@ namespace UnitTestsCoreWrapper
                 body.MergeSettings = settings;
 
                 // merge the document
-                List<byte[]> results = rc.MergeDocument(body, sTempFilename, ReturnFormat.HTML);
+                List<byte[]> results = rc.MergeDocument(body, sTempFilename, ReturnFormat.HTML, false, true);
 
                 string bHtmlDocument = System.Text.Encoding.UTF8.GetString(results[0]);
 
