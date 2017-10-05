@@ -11,7 +11,7 @@ namespace UnitTestsCoreWrapper
     {
         string sUsername = "";
         string sPassword = "";
-        Uri uriBasePath = new Uri("https://api.reporting.cloud");
+        Uri uriBasePath = new Uri("https://api.reporting.cloud/");
 
         [TestMethod()]
         public void AvailableDictionariesTest()
@@ -24,6 +24,26 @@ namespace UnitTestsCoreWrapper
 
                 // check, if images are created
                 Assert.IsFalse(saDictionaries.Length == 0);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [TestMethod()]
+        public void ShareDocumentTest()
+        {
+            try
+            {
+                ReportingCloud rc = new ReportingCloud(sUsername, sPassword, uriBasePath);
+
+                List<Template> lTemplates = rc.ListTemplates();
+
+                string sSharedHash = rc.ShareDocument(lTemplates[0].TemplateName);
+
+                // check, if images are created
+                Assert.IsFalse(sSharedHash.Length == 0);
             }
             catch (Exception exc)
             {
