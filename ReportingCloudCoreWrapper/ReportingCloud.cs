@@ -143,6 +143,41 @@ namespace TXTextControl.ReportingCloud
         }
 
         /*-------------------------------------------------------------------------------------------------------
+        // ** ShareDocument **
+        // This method implements the "v1/document/share" Web API call
+        //
+        // Parameters:
+        //  - string templateName
+        //
+        // Return value: string
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// This method returns the hash value that is used to share documents using the portal.
+        /// </summary>
+        /// <param name="templateName">The name of the template that should be shared.</param>
+        public string ShareDocument(string templateName)
+        {
+            // create a new HttpClient using the Factory method CreateHttpClient
+            using (HttpClient client = CreateHttpClient())
+            {
+                // set the endpoint and pass the query paramaters
+                HttpResponseMessage response =
+                    client.GetAsync("v1/document/share?templateName=" + templateName).Result;
+
+                // if sucessful, return the image list
+                if (response.IsSuccessStatusCode)
+                {
+                    return (string)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(string));
+                }
+                else
+                {
+                    // throw exception with the message from the endpoint
+                    throw new ArgumentException(response.Content.ReadAsStringAsync().Result);
+                }
+            }
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
         // ** FindAndReplaceDocument **
         // This method implements the "v1/document/findandreplace" Web API call
         //
