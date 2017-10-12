@@ -62,6 +62,6 @@ namespace TXTextControl.ReportingCloud
         /// <summary>
         /// Optional. Sets the culture for the merge process for date and currency values.
         /// </summary>
-        public System.Globalization.CultureInfo Culture { get; set; }
+        public string Culture { get; set; }
     }
 }

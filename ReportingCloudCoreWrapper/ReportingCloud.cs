@@ -258,7 +258,7 @@ namespace TXTextControl.ReportingCloud
             {
                 var sMergeBody = JsonConvert.SerializeObject(mergeBody, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 // set the endpoint and pass the query paramaters

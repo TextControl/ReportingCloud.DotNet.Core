@@ -142,7 +142,7 @@ namespace UnitTestsCoreWrapper
                 MergeSettings settings = new MergeSettings();
                 settings.Author = "Text Control GmbH";
                 settings.MergeHtml = true;
-                settings.Culture = new System.Globalization.CultureInfo("de-DE");
+                settings.Culture = "de-DE";
 
                 body.MergeSettings = settings;
 
