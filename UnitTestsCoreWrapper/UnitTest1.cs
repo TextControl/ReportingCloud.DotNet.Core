@@ -14,6 +14,67 @@ namespace UnitTestsCoreWrapper
         Uri uriBasePath = new Uri("https://api.reporting.cloud/");
 
         [TestMethod()]
+        public void ReportingCloudAPIKeyTest()
+        {
+            try
+            {
+                ReportingCloud rc = new ReportingCloud(sUsername, sPassword, uriBasePath);
+                string sAPIKey;
+                bool bKeyCreated = false;
+
+                // create a new key, if no keys exist
+                if (rc.GetAccountAPIKeys().Count == 0)
+                {
+                    sAPIKey = rc.CreateAccountAPIKey();
+                    bKeyCreated = true;
+                }
+                else
+                    sAPIKey = rc.GetAccountAPIKeys()[0].Key;
+
+                // create new instance with new API Key
+                ReportingCloud rc2 = new ReportingCloud(sAPIKey, uriBasePath);
+
+                // check account settings
+                var accountSettings = rc2.GetAccountSettings();
+
+                Assert.IsFalse(accountSettings.MaxDocuments == 0);
+
+                // remove created key
+                if (bKeyCreated == true)
+                    rc.DeleteAccountAPIKey(sAPIKey);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAccountAPIKeysTest()
+        {
+            try
+            {
+                ReportingCloud rc = new ReportingCloud(sUsername, sPassword, uriBasePath);
+
+                // create a new key
+                string sAPIKey = rc.CreateAccountAPIKey();
+
+                // get all keys
+                List<APIKey> lAPIKeys = rc.GetAccountAPIKeys();
+
+                // check, if at least 1 key is in list
+                Assert.IsFalse(lAPIKeys.Count == 0);
+
+                // clean up
+                rc.DeleteAccountAPIKey(sAPIKey);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [TestMethod()]
         public void AvailableDictionariesTest()
         {
             try

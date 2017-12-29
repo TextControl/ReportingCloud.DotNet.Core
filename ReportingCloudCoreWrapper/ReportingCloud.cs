@@ -59,10 +59,41 @@ namespace TXTextControl.ReportingCloud
         }
 
         /*-------------------------------------------------------------------------------------------------------
+    // ** ReportingCloud Constructor **
+    // Only registered users with a valid Username, Password are allowed
+    *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// ReportingCloud constructor. Use your ReportingCloud credentials
+        /// to create a new instance of ReportingCloud.
+        /// </summary>
+        /// <param name="apikey"> An active and valid API Key that should be used for the transactions.</param>
+        public ReportingCloud(string apikey)
+        {
+            m_sAPIKey = apikey;
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
+        // ** ReportingCloud Constructor **
+        // Only registered users with a valid Username, Password are allowed
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// ReportingCloud constructor. Use your ReportingCloud credentials
+        /// to create a new instance of ReportingCloud.
+        /// </summary>
+        /// <param name="apikey"> An active and valid API Key that should be used for the transactions.</param>
+        /// <param name="webApiBaseUrl">The Web API base URL of ReportingCloud. This Base URL is listed here: http://api.reporting.cloud/documentation/reference/</param>
+        public ReportingCloud(string apikey, Uri webApiBaseUrl)
+        {
+            m_sAPIKey = apikey;
+            m_sWebApiBaseUrl = webApiBaseUrl;
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
         // ** Member fields **
         *-----------------------------------------------------------------------------------------------------*/
         private string m_sUsername;
         private string m_sPassword;
+        private string m_sAPIKey;
         private Uri m_sWebApiBaseUrl = new Uri("https://api.reporting.cloud");
         
         /*-------------------------------------------------------------------------------------------------------
@@ -75,6 +106,15 @@ namespace TXTextControl.ReportingCloud
         {
             get { return m_sUsername; }
             set { m_sUsername = value; }
+        }
+
+        /// <summary>
+        /// An active and valid API Key that should be used for the transactions.
+        /// </summary>
+        public string APIKey
+        {
+            get { return m_sAPIKey; }
+            set { m_sAPIKey = value; }
         }
 
         /// <summary>
@@ -93,6 +133,97 @@ namespace TXTextControl.ReportingCloud
         {
             get { return m_sWebApiBaseUrl; }
             set { m_sWebApiBaseUrl = value; }
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
+        // ** GetAccountAPIKeys **
+        // This method implements the "v1/account/apikeys" Web API call
+        //
+        // Return value: APIKey[]
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// This method returns the available API Keys for the current account
+        /// </summary>
+        public List<APIKey> GetAccountAPIKeys()
+        {
+            // create a new HttpClient using the Factory method CreateHttpClient
+            using (HttpClient client = CreateHttpClient())
+            {
+                // set the endpoint and pass the query paramaters
+                HttpResponseMessage response = client.GetAsync("v1/account/apikeys").Result;
+
+                // if successful, return the document list
+                if (response.IsSuccessStatusCode)
+                {
+                    return (List<APIKey>)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(List<APIKey>));
+                }
+                else
+                {
+                    // throw exception with the message from the endpoint
+                    throw new ArgumentException(response.Content.ReadAsStringAsync().Result);
+                }
+            }
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
+        // ** CreateAccountAPIKey **
+        // This method implements the PUT "v1/account/apikey" Web API call
+        //
+        // Return value: string
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// This method creates and returns a valid API Key for the current account
+        /// </summary>
+        public string CreateAccountAPIKey()
+        {
+            // create a new HttpClient using the Factory method CreateHttpClient
+            using (HttpClient client = CreateHttpClient())
+            {
+                // set the endpoint and pass the query paramaters
+                HttpResponseMessage response = client.PutAsync("v1/account/apikey", null).Result;
+
+                // if successful, return the document list
+                if (response.IsSuccessStatusCode)
+                {
+                    return (string)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(string));
+                }
+                else
+                {
+                    // throw exception with the message from the endpoint
+                    throw new ArgumentException(response.Content.ReadAsStringAsync().Result);
+                }
+            }
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
+        // ** DeleteAccountAPIKey **
+        // This method implements the DELETE "v1/account/apikey" Web API call
+        //
+        // Return value: bool
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// This method deletes an available API Key that belongs to the current account
+        /// </summary>
+        /// <param name="key">The API Key that should be deleted.</param>
+        public bool DeleteAccountAPIKey(string key)
+        {
+            // create a new HttpClient using the Factory method CreateHttpClient
+            using (HttpClient client = CreateHttpClient())
+            {
+                // set the endpoint and pass the query paramaters
+                HttpResponseMessage response = client.DeleteAsync("v1/account/apikey?key=" + key).Result;
+
+                // if successful, return the document list
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    // throw exception with the message from the endpoint
+                    throw new ArgumentException(response.Content.ReadAsStringAsync().Result);
+                }
+            }
         }
 
         /*-------------------------------------------------------------------------------------------------------
@@ -750,7 +881,15 @@ namespace TXTextControl.ReportingCloud
             client.BaseAddress = m_sWebApiBaseUrl;
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("Authorization", "Basic " + EncodeTo64(m_sUsername + ":" + m_sPassword));
+
+            if (m_sAPIKey != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "ReportingCloud-APIKey " + m_sAPIKey);
+            }
+            else
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Basic " + EncodeTo64(m_sUsername + ":" + m_sPassword));
+            }
 
             return client;
         }
