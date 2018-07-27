@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>TXTextControl.ReportingCloud.Core</PackageId>
-    <Version>1.100.500</Version>
+    <Version>1.104.500</Version>
     <Authors>Text Control GmbH</Authors>
     <Company>Text Control GmbH</Company>
     <Product>Text Control ReportingCloud</Product>
@@ -15,8 +15,8 @@
     <PackageIconUrl>http://www.reporting.cloud/favicon.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/TextControl/ReportingCloud.DotNet.Core</RepositoryUrl>
     <PackageTags>MailMerge, Reporting, MS Word, Reporting Cloud, Flow Type Layout</PackageTags>
-    <FileVersion>1.0.101.100</FileVersion>
-    <AssemblyVersion>1.0.101.100</AssemblyVersion>
+    <FileVersion>1.0.104.100</FileVersion>
+    <AssemblyVersion>1.0.104.100</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

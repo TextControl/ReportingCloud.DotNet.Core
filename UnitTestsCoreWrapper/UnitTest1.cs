@@ -208,7 +208,7 @@ namespace UnitTestsCoreWrapper
                 body.MergeSettings = settings;
 
                 // merge the document
-                List<byte[]> results = rc.MergeDocument(body, sTempFilename, ReturnFormat.HTML, false, true);
+                List<byte[]> results = rc.MergeDocument(body, sTempFilename, ReturnFormat.HTML, false, false);
 
                 string bHtmlDocument = System.Text.Encoding.UTF8.GetString(results[0]);
 
@@ -252,8 +252,8 @@ namespace UnitTestsCoreWrapper
                 ReportingCloud rc = new ReportingCloud(sUsername, sPassword, uriBasePath);
 
                 // upload 1 more document with unique file name
-                byte[] bDocument = File.ReadAllBytes("documents/invoice.tx");
-                string sTempFilename = "test" + Guid.NewGuid().ToString() + ".tx";
+                byte[] bDocument = File.ReadAllBytes("documents/sample_docx.docx");
+                string sTempFilename = "test" + Guid.NewGuid().ToString() + ".docx";
                 rc.UploadTemplate(sTempFilename, bDocument);
 
                 // get template information
