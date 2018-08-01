@@ -252,8 +252,8 @@ namespace UnitTestsCoreWrapper
                 ReportingCloud rc = new ReportingCloud(sUsername, sPassword, uriBasePath);
 
                 // upload 1 more document with unique file name
-                byte[] bDocument = File.ReadAllBytes("documents/sample_docx.docx");
-                string sTempFilename = "test" + Guid.NewGuid().ToString() + ".docx";
+                byte[] bDocument = File.ReadAllBytes("documents/test.doc");
+                string sTempFilename = "test" + Guid.NewGuid().ToString() + ".doc";
                 rc.UploadTemplate(sTempFilename, bDocument);
 
                 // get template information
