@@ -9,7 +9,7 @@ namespace TXTextControl.ReportingCloud
     /// <summary>
     /// This class provides the structure of the ReportingCloud MergeSettings object used in the Merge method.
     /// </summary>
-    public class MergeSettings
+    public class MergeSettings : DocumentSettings
     {
         /// <summary>
         /// Optional. Specifies whether empty fields should be removed from the template or not. The default value is true.
@@ -34,6 +34,15 @@ namespace TXTextControl.ReportingCloud
         /// <summary>
         /// Optional. Sets the document's author.
         /// </summary>
+  
+        /// <summary>
+        /// Optional. Sets the culture for the merge process for date and currency values.
+        /// </summary>
+        public string Culture { get; set; }
+    }
+
+    public class DocumentSettings
+    {
         public string Author { get; set; }
         /// <summary>
         /// Optional. Sets the document's creation date which will be saved in the document.
@@ -59,9 +68,5 @@ namespace TXTextControl.ReportingCloud
         /// Optional. Sets the date the document is last modified.
         /// </summary>
         public string UserPassword { get; set; }
-        /// <summary>
-        /// Optional. Sets the culture for the merge process for date and currency values.
-        /// </summary>
-        public string Culture { get; set; }
     }
 }

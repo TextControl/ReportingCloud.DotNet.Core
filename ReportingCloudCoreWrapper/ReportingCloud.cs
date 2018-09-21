@@ -359,6 +359,54 @@ namespace TXTextControl.ReportingCloud
         }
 
         /*-------------------------------------------------------------------------------------------------------
+        // ** AppendDocument **
+        // This method implements the "v1/document/append" Web API call
+        //
+        // Parameters:
+        //  - AppendBody AppendBody
+        //  - ReturnFormat ReturnFormat (default = PDF)
+        //
+        // Return value: byte[]
+        *-----------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// This method merges a template with data.
+        /// </summary>
+        /// <param name="appendBody">The AppendBody object contains the documents for the append process.</param>
+        /// <param name="returnFormat">The document format of the resulting document.</param>
+        /// <param name="test">Specifies whether it is a test run or not. A test run is not counted against the quota and created documents contain a watermark.</param>
+        public byte[] AppendDocument(AppendBody appendBody,
+            ReturnFormat returnFormat = ReturnFormat.PDF,
+            bool test = false)
+        {
+            // create a new HttpClient using the Factory method CreateHttpClient
+            using (HttpClient client = CreateHttpClient())
+            {
+                var sAppendBody = JsonConvert.SerializeObject(appendBody, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                });
+
+                // set the endpoint and pass the query paramaters
+                // MergeBody is posted as a JSON object
+                HttpResponseMessage response = client.PostAsync("v1/document/append?returnFormat=" + returnFormat.ToString() +
+                    "&test=" + test.ToString(),
+                    new StringContent(sAppendBody, Encoding.UTF8, "application/json")).Result;
+
+                // if sucessful, return the image list
+                if (response.IsSuccessStatusCode)
+                {
+                    string sResult = (string)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(string));
+                    return Convert.FromBase64String(sResult);
+                }
+                else
+                {
+                    // throw exception with the message from the endpoint
+                    throw new ArgumentException(response.Content.ReadAsStringAsync().Result);
+                }
+            }
+        }
+
+        /*-------------------------------------------------------------------------------------------------------
         // ** MergeDocument **
         // This method implements the "v1/document/merge" Web API call
         //
@@ -379,10 +427,10 @@ namespace TXTextControl.ReportingCloud
         /// <param name="append">Specifies whether the resulting documents should be appended or not.</param>
         /// <param name="test">Specifies whether it is a test run or not. A test run is not counted against the quota and created documents contain a watermark.</param>
         public List<byte[]> MergeDocument(MergeBody mergeBody,
-        string templateName = null,
-        ReturnFormat returnFormat = ReturnFormat.PDF,
-        bool append = true,
-        bool test = false)
+            string templateName = null,
+            ReturnFormat returnFormat = ReturnFormat.PDF,
+            bool append = true,
+            bool test = false)
         {
             // create a new HttpClient using the Factory method CreateHttpClient
             using (HttpClient client = CreateHttpClient())
