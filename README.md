@@ -2,6 +2,8 @@
 
 #  ReportingCloud .NET Core Wrapper
 
+[Deprecated - the ReportingCloud.DotNet wrapper is multi-target now]
+
 This is the official .NET Core wrapper for ReportingCloud, which is authored, maintained and fully supported by [Text Control](http://www.textcontrol.com).
 
 [http://www.reporting.cloud](http://www.reporting.cloud)
