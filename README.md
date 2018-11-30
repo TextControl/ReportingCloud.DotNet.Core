@@ -1,6 +1,6 @@
 ![Logo](https://raw.githubusercontent.com/TextControl/TXTextControl.ReportingCloud.Dotnet/master/Resources/rc_logo_512.png)
 
-#  ReportingCloud .NET Core Wrapper
+#  [Deprecated] ReportingCloud .NET Core Wrapper
 
 [Deprecated - the ReportingCloud.DotNet wrapper is multi-target now]
 
